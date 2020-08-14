@@ -1,4 +1,4 @@
-project('Vala Calculator', 'vala', 'c')
+project('Vala Calculator', 'vala', 'c', version: '0.1')
 
 dependencies = [
     dependency('glib-2.0'),

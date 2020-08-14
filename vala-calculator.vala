@@ -10,6 +10,10 @@ public class MyCalc : Gtk.Window {
         this.window_position = Gtk.WindowPosition.CENTER;
         
         var entDisp = new Gtk.Entry ();
+        entDisp.editable = false;
+        entDisp.set_alignment (1.0f);
+        entDisp.set_text("0.");
+        entDisp.set_position(2);
 
         var but_0 = new Gtk.Button.with_label ("0");
         var but_1 = new Gtk.Button.with_label ("1");
@@ -28,7 +32,8 @@ public class MyCalc : Gtk.Window {
         var butDiv = new Gtk.Button.with_label ("÷");
         var butMul = new Gtk.Button.with_label ("×");
         var butMinus = new Gtk.Button.with_label ("-");
-        var butPlus = new Gtk.Button.with_label ("+\n=");
+        var butPlus = new Gtk.Button.with_label ("+");
+        var butEqual = new Gtk.Button.with_label ("=");
         var butDot = new Gtk.Button.with_label (".");
         var butSign = new Gtk.Button.with_label ("±");
 
@@ -56,11 +61,12 @@ public class MyCalc : Gtk.Window {
         grid.attach(but_1,      0, 4, 1, 1);
         grid.attach(but_2,      1, 4, 1, 1);
         grid.attach(but_3,      2, 4, 1, 1);
-        grid.attach(butPlus,    3, 4, 1, 2);
+        grid.attach(butPlus,    3, 4, 1, 1);
 
         grid.attach(but_0,      0, 5, 1, 1);
         grid.attach(butDot,     1, 5, 1, 1);
         grid.attach(butSign,    2, 5, 1, 1);
+        grid.attach(butEqual,   3, 5, 1, 1);
     }
 }
 

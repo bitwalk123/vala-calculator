@@ -2,6 +2,8 @@
 
 public class MyCalc : Gtk.Window {
 
+    Gtk.Entry entDisp = new Gtk.Entry ();
+
     public MyCalc () {
         this.destroy.connect (Gtk.main_quit);
         this.title = "Calculator";
@@ -9,7 +11,7 @@ public class MyCalc : Gtk.Window {
         this.border_width = 0;
         this.window_position = Gtk.WindowPosition.CENTER;
         
-        var entDisp = new Gtk.Entry ();
+        entDisp = new Gtk.Entry ();
         entDisp.editable = false;
         entDisp.set_alignment (1.0f);
         entDisp.set_text("0.");
@@ -37,6 +39,12 @@ public class MyCalc : Gtk.Window {
         var butDot = new Gtk.Button.with_label (".");
         var butSign = new Gtk.Button.with_label ("±");
 
+        Gtk.Button [] list_button = {
+            but_0, but_1, but_2, but_3, but_4, but_5, but_6, but_7, but_8, but_9,
+            butCls, butPercent, butSqrt, butDiv, butMul, butMinus, butPlus, butEqual, butDot, butSign};
+        foreach (Gtk.Button button in list_button) {
+            button.clicked.connect (this.on_clicked);
+        } 
 
         var grid = new Gtk.Grid();
         this.add(grid);
@@ -67,6 +75,10 @@ public class MyCalc : Gtk.Window {
         grid.attach(butDot,     1, 5, 1, 1);
         grid.attach(butSign,    2, 5, 1, 1);
         grid.attach(butEqual,   3, 5, 1, 1);
+    }
+
+    void on_clicked (Gtk.Button button) {
+        print (button.get_label() + " button is clicked.\n");
     }
 }
 

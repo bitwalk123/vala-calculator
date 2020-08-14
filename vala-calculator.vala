@@ -13,6 +13,7 @@ public class MyCalc : Gtk.Window {
         this.window_position = Gtk.WindowPosition.CENTER;
 
         // for display
+        entDisp.can_focus = false;
         entDisp.editable = false;
         entDisp.set_alignment (1.0f);
         entDisp.set_text("0.");

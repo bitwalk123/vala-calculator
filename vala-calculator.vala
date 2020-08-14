@@ -2,6 +2,7 @@
 
 public class MyCalc : Gtk.Window {
 
+    // global varioables
     Gtk.Entry entDisp = new Gtk.Entry ();
 
     public MyCalc () {
@@ -10,13 +11,14 @@ public class MyCalc : Gtk.Window {
         this.resizable = false;
         this.border_width = 0;
         this.window_position = Gtk.WindowPosition.CENTER;
-        
-        entDisp = new Gtk.Entry ();
+
+        // for display
         entDisp.editable = false;
         entDisp.set_alignment (1.0f);
         entDisp.set_text("0.");
         entDisp.set_position(2);
 
+        // number buttons
         var but_0 = new Gtk.Button.with_label ("0");
         var but_1 = new Gtk.Button.with_label ("1");
         var but_2 = new Gtk.Button.with_label ("2");
@@ -28,6 +30,7 @@ public class MyCalc : Gtk.Window {
         var but_8 = new Gtk.Button.with_label ("8");
         var but_9 = new Gtk.Button.with_label ("9");
 
+        // operation buttons
         var butCls = new Gtk.Button.with_label ("C");
         var butPercent = new Gtk.Button.with_label ("%");
         var butSqrt = new Gtk.Button.with_label ("√");
@@ -39,6 +42,7 @@ public class MyCalc : Gtk.Window {
         var butDot = new Gtk.Button.with_label (".");
         var butSign = new Gtk.Button.with_label ("±");
 
+        // connect function for button clicking
         Gtk.Button [] list_button = {
             but_0, but_1, but_2, but_3, but_4, but_5, but_6, but_7, but_8, but_9,
             butCls, butPercent, butSqrt, butDiv, butMul, butMinus, butPlus, butEqual, butDot, butSign};
@@ -46,6 +50,7 @@ public class MyCalc : Gtk.Window {
             button.clicked.connect (this.on_clicked);
         } 
 
+        // layout
         var grid = new Gtk.Grid();
         this.add(grid);
 
@@ -77,6 +82,7 @@ public class MyCalc : Gtk.Window {
         grid.attach(butEqual,   3, 5, 1, 1);
     }
 
+    // button click event
     void on_clicked (Gtk.Button button) {
         print (button.get_label() + " button is clicked.\n");
     }

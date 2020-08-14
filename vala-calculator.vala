@@ -4,7 +4,8 @@ public class MyCalc : Gtk.Window {
 
     public MyCalc () {
         this.destroy.connect (Gtk.main_quit);
-        this.title = "Vala Calculator";
+        this.title = "Calculator";
+        this.resizable = false;
         this.border_width = 0;
         this.window_position = Gtk.WindowPosition.CENTER;
         

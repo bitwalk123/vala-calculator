@@ -5,6 +5,13 @@ public class MyCalc : Gtk.Window {
     // global varioables
     Gtk.Entry entDisp = new Gtk.Entry ();
 
+    bool flag_dot = false;
+    bool flag_entrystarted = false;
+
+    string entry = "";
+    string result = "";
+    string operation = "";
+
     public MyCalc () {
         this.destroy.connect (Gtk.main_quit);
         this.title = "Calculator";
@@ -16,8 +23,7 @@ public class MyCalc : Gtk.Window {
         entDisp.can_focus = false;
         entDisp.editable = false;
         entDisp.set_alignment (1.0f);
-        entDisp.set_text("0.");
-        entDisp.set_position(2);
+        this.doClear();
 
         // number buttons
         var but_0 = new Gtk.Button.with_label ("0");
@@ -85,7 +91,122 @@ public class MyCalc : Gtk.Window {
 
     // button click event
     void on_clicked (Gtk.Button button) {
-        print (button.get_label() + " button is clicked.\n");
+        //print (button.get_label() + " button is clicked.\n");
+        switch (button.get_label()) {
+            case "0":
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+                this.doApp(button.get_label());
+                break;
+            case "+":
+            case "-":
+            case "×":
+            case "÷":
+                this.doOpe(button.get_label());
+                break;
+            case ".":
+                this.doDot();
+                break;
+            case "=":
+                this.doEqual();
+                break;
+            case "C":
+                this.doClear();
+                break;
+        }
+    }
+
+    void disp (string strVal) {
+        entDisp.set_text(strVal);
+        entDisp.set_position(strVal.length);
+    }
+
+    void doApp (string what) {
+        if (flag_entrystarted == false) {
+            entry = "0.";
+            this.disp(entry);
+        }
+        if (operation == null) {
+            result = "0.";
+        }
+        if (!(what == "0" && entry == "0.")) {
+            flag_entrystarted = true;
+            if (flag_dot == true) {
+                entry = entry + what;
+                this.disp(entry);
+            } else {
+                if (entry == "0.") {
+                    entry = what + ".";
+                    this.disp(entry);
+                } else {
+                    int n = entry.length;
+                    if (entry.get_char(n - 1) == '.') {
+                        entry = entry.substring(0, n - 1);
+                    }
+                    entry = entry + what + ".";
+                    this.disp(entry);
+                }
+            }
+        }
+    }
+
+    void doClear () {
+        flag_dot = false;
+        if (flag_entrystarted != true) {
+            result = "0.";
+            operation = null;
+        }
+        flag_entrystarted = false;
+
+        entry = "0.";
+        this.disp(entry);
+    }
+
+    void doDot () {
+        flag_dot = true;
+    }
+
+    void doEqual () {
+        if (operation != null) {
+            switch (operation) {
+                case "+":
+                    result = @"$(double.parse(result) + double.parse(entry))";
+                    break;
+                case "-":
+                    result = @"$(double.parse(result) - double.parse(entry))";
+                    break;
+                case "×":
+                    result = @"$(double.parse(result) * double.parse(entry))";
+                    break;
+                case "÷":
+                    result = @"$(double.parse(result) / double.parse(entry))";
+                    break;
+            }
+        } else {
+            result = entry;
+        }
+        flag_entrystarted = false;
+        operation = null;
+        flag_dot = false;
+
+        entry = result;
+        this.disp(entry);
+    }
+
+    void doOpe (string what) {
+        if (operation != null) this.doEqual ();
+        operation = what;
+        flag_entrystarted = false;
+        flag_dot = false;
+
+        result = entry;
     }
 }
 

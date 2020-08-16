@@ -133,6 +133,9 @@ public class MyCalc : Gtk.Window {
             case "√":
                 this.doSqrt();
                 break;
+            case "%":
+                this.doPercent();
+                break;
             case "=":
                 this.doEqual();
                 break;
@@ -266,6 +269,15 @@ public class MyCalc : Gtk.Window {
     }
 
     // ------------------------------------------------------------------------
+    //  void doPercent - called when & button is clicked for percent calculation 
+    // ------------------------------------------------------------------------
+    void doPercent () {
+        flag_entrystarted = false;
+        entry = @"$(float.parse(entry) / 100)";
+        this.disp(entry);
+    }
+
+    // ------------------------------------------------------------------------
     //  void doSign - called when ± button is clicked for changing sign 
     // ------------------------------------------------------------------------
     void doSign () {
@@ -284,10 +296,10 @@ public class MyCalc : Gtk.Window {
     }
 }
 
-    // ------------------------------------------------------------------------
-    //  MAIN
-    // ------------------------------------------------------------------------
-    public static int main (string[] args) {
+// ----------------------------------------------------------------------------
+//  MAIN
+// ------------------------------------------------------------------------
+public static int main (string[] args) {
     Gtk.init (ref args);
 
     MyCalc app = new MyCalc ();

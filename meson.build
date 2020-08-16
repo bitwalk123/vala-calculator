@@ -14,7 +14,7 @@ calculator_lib = shared_library(
   vala_header: 'calculator.h',
   vala_vapi: 'calculator-1.0.vapi',
   dependencies: dependencies,
-  link_args : ['-X', '-lm',],
+  link_args : ['-lm',],
   install: true,
   install_dir: [true, true, true]
 )
@@ -23,7 +23,7 @@ executable(
   'calculator',
   sources,
   dependencies : dependencies,
-  link_args : ['-X', '-lm',],
+  link_args : ['-lm',],
   install : true
 )
 

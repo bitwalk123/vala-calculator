@@ -12,6 +12,9 @@ public class MyCalc : Gtk.Window {
     string result = "";
     string operation = "";
 
+    // ------------------------------------------------------------------------
+    //  CONSTRUCTOR
+    // ------------------------------------------------------------------------
     public MyCalc () {
         this.destroy.connect (Gtk.main_quit);
         this.title = "Calculator";
@@ -38,21 +41,26 @@ public class MyCalc : Gtk.Window {
         var but_9 = new Gtk.Button.with_label ("9");
 
         // operation buttons
-        var butCls = new Gtk.Button.with_label ("C");
-        var butPercent = new Gtk.Button.with_label ("%");
-        var butSqrt = new Gtk.Button.with_label ("√");
         var butDiv = new Gtk.Button.with_label ("÷");
         var butMul = new Gtk.Button.with_label ("×");
         var butMinus = new Gtk.Button.with_label ("-");
         var butPlus = new Gtk.Button.with_label ("+");
         var butEqual = new Gtk.Button.with_label ("=");
-        var butDot = new Gtk.Button.with_label (".");
+
+        // function buttons
+        var butPercent = new Gtk.Button.with_label ("%");
+        var butSqrt = new Gtk.Button.with_label ("√");
         var butSign = new Gtk.Button.with_label ("±");
+
+        // other buttons
+        var butCls = new Gtk.Button.with_label ("C");
+        var butDot = new Gtk.Button.with_label (".");
 
         // connect function for button clicking
         Gtk.Button [] list_button = {
             but_0, but_1, but_2, but_3, but_4, but_5, but_6, but_7, but_8, but_9,
-            butCls, butPercent, butSqrt, butDiv, butMul, butMinus, butPlus, butEqual, butDot, butSign};
+            butCls, butPercent, butSqrt, butDiv, butMul, butMinus, butPlus, butEqual, butDot, butSign
+        };
         foreach (Gtk.Button button in list_button) {
             button.clicked.connect (this.on_clicked);
         } 
@@ -89,7 +97,12 @@ public class MyCalc : Gtk.Window {
         grid.attach(butEqual,   3, 5, 1, 1);
     }
 
-    // button click event
+    // ------------------------------------------------------------------------
+    //  void on_clicked - button click event
+    // 
+    //  argument
+    //    Gtk.Button button : button object clicked
+    // ------------------------------------------------------------------------
     void on_clicked (Gtk.Button button) {
         //print (button.get_label() + " button is clicked.\n");
         switch (button.get_label()) {
@@ -114,6 +127,12 @@ public class MyCalc : Gtk.Window {
             case ".":
                 this.doDot();
                 break;
+            case "±":
+                this.doSign();
+                break;
+            case "√":
+                this.doSqrt();
+                break;
             case "=":
                 this.doEqual();
                 break;
@@ -123,13 +142,33 @@ public class MyCalc : Gtk.Window {
         }
     }
 
-    void disp (string strVal) {
-        entDisp.set_text(strVal);
-        entDisp.set_position(strVal.length);
+    // ------------------------------------------------------------------------
+    //  void disp - display result on the calculator
+    //
+    //  argument
+    //    string what : number in string format to be displayed
+    // ------------------------------------------------------------------------
+    void disp (string what) {
+        // check if what includes "." or not.
+        string dispStr;
+        if (!what.contains(".")) {
+            dispStr = what + ".";
+        } else {
+            dispStr = what;
+        }
+        // update display
+        entDisp.set_text(dispStr);
+        entDisp.set_position(dispStr.length);
     }
 
+    // ------------------------------------------------------------------------
+    //  void doApp -  called when number key is clicked
+    //
+    //  argument
+    //    string what : single number either in 0 - 9.
+    // ------------------------------------------------------------------------
     void doApp (string what) {
-        if (flag_entrystarted == false) {
+        if (!flag_entrystarted) {
             entry = "0.";
             this.disp(entry);
         }
@@ -157,36 +196,47 @@ public class MyCalc : Gtk.Window {
         }
     }
 
+    // ------------------------------------------------------------------------
+    //  void doClear - called when clear button is clicked
+    // ------------------------------------------------------------------------
     void doClear () {
-        flag_dot = false;
-        if (flag_entrystarted != true) {
+        if (!flag_entrystarted) {
             result = "0.";
             operation = null;
+        } else {
+            flag_entrystarted = false;
         }
-        flag_entrystarted = false;
+
+        flag_dot = false;
 
         entry = "0.";
         this.disp(entry);
     }
 
+    // ------------------------------------------------------------------------
+    //  void doDot - called when dot button is clicked
+    // ------------------------------------------------------------------------
     void doDot () {
         flag_dot = true;
     }
 
+    // ------------------------------------------------------------------------
+    //  void doEqual - called when equal button is clicked
+    // ------------------------------------------------------------------------
     void doEqual () {
         if (operation != null) {
             switch (operation) {
                 case "+":
-                    result = @"$(double.parse(result) + double.parse(entry))";
+                    result = @"$(float.parse(result) + float.parse(entry))";
                     break;
                 case "-":
-                    result = @"$(double.parse(result) - double.parse(entry))";
+                    result = @"$(float.parse(result) - float.parse(entry))";
                     break;
                 case "×":
-                    result = @"$(double.parse(result) * double.parse(entry))";
+                    result = @"$(float.parse(result) * float.parse(entry))";
                     break;
                 case "÷":
-                    result = @"$(double.parse(result) / double.parse(entry))";
+                    result = @"$(float.parse(result) / float.parse(entry))";
                     break;
             }
         } else {
@@ -200,6 +250,12 @@ public class MyCalc : Gtk.Window {
         this.disp(entry);
     }
 
+    // ------------------------------------------------------------------------
+    //  void doOpe - called when operation button is clicked
+    //
+    //  argument
+    //    string what : operation ether in +, -, ×, ÷
+    // ------------------------------------------------------------------------
     void doOpe (string what) {
         if (operation != null) this.doEqual ();
         operation = what;
@@ -208,9 +264,30 @@ public class MyCalc : Gtk.Window {
 
         result = entry;
     }
+
+    // ------------------------------------------------------------------------
+    //  void doSign - called when ± button is clicked for changing sign 
+    // ------------------------------------------------------------------------
+    void doSign () {
+        flag_entrystarted = false;
+        entry = @"$(-1 * float.parse(entry))";
+        this.disp(entry);
+    }
+
+    // ------------------------------------------------------------------------
+    //  void doSqrt - called when √ button is clicked for calculating square root 
+    // ------------------------------------------------------------------------
+    void doSqrt () {
+        flag_entrystarted = false;
+        entry = @"$(Math.sqrt(float.parse(entry)))";
+        this.disp(entry);
+    }
 }
 
-public static int main (string[] args) {
+    // ------------------------------------------------------------------------
+    //  MAIN
+    // ------------------------------------------------------------------------
+    public static int main (string[] args) {
     Gtk.init (ref args);
 
     MyCalc app = new MyCalc ();
@@ -219,4 +296,5 @@ public static int main (string[] args) {
     return 0;
 }
 
-
+// ---
+//  END PROGRAM

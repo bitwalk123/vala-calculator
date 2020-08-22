@@ -8,6 +8,10 @@ dependencies = [
 ]
 
 sources = files('vala-calculator.vala')
+if meson.is_cross_build()
+    winmod = import('windows')
+    sources += winmod.compile_resources('calc.rc')
+endif
 
 calculator_lib = shared_library(
   'calculator',

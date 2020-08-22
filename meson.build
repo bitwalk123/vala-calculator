@@ -4,6 +4,7 @@ dependencies = [
     dependency('glib-2.0'),
     dependency('gobject-2.0'),
     dependency('gtk+-3.0'),
+    meson.get_compiler('c').find_library('m', required: false),
 ]
 
 sources = files('vala-calculator.vala')
@@ -14,7 +15,6 @@ calculator_lib = shared_library(
   vala_header: 'calculator.h',
   vala_vapi: 'calculator-1.0.vapi',
   dependencies: dependencies,
-  link_args : ['-lm',],
   install: true,
   install_dir: [true, true, true]
 )
@@ -23,7 +23,7 @@ executable(
   'calculator',
   sources,
   dependencies : dependencies,
-  link_args : ['-lm',],
+  gui_app : true,
   install : true
 )
 

@@ -1,6 +1,6 @@
 {
     "app-id" : "com.blogspot.bitwalk",
-    "runtime" : "org.gnome.Platform",
+    "runtime" : "org.gnome.Sdk",
     "runtime-version" : "3.36",
     "sdk" : "org.gnome.Sdk",
     "command" : "calculator",
